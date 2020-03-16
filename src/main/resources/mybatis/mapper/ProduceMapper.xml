@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhanglong.yxhstudiomp.mapper.ProduceMapper">
+	<resultMap type="com.zhanglong.yxhstudiomp.bean.Produce" id="ProduceMap">
+		<id property="pid" column="pid"/>
+		<result property="pname" column="pname"/>
+		<result property="pprice" column="pprice"/>
+		<result property="pimgurl" column="pimgurl"/>
+		<result property="pdesc" column="pdesc"/>
+		<result property="premark" column="premark"/>
+	</resultMap>
+	
+	<!-- 查询商品列表 -->
+	<select id="getProduceList" resultMap="ProduceMap">
+		SELECT * FROM `produce`	
+	</select>
+	
+	<!-- 根据商品Id查询单个商品信息 -->
+	<select id="getProduceById" parameterType="java.lang.Integer" resultMap="ProduceMap">
+		SELECT * FROM `produce`	WHERE pid=#{pid}
+	</select>
+</mapper>

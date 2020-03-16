@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhanglong.yxhstudiomp.mapper.UserInfoMapper">
+	<resultMap type="com.zhanglong.yxhstudiomp.bean.UserInfo" id="UserInfoMap">
+		<id property="openId" column="openId"/>
+		<result property="nickName" column="nickName"/>
+		<result property="gender" column="gender"/>
+		<result property="city" column="city"/>
+		<result property="province" column="province"/>
+		<result property="country" column="country"/>
+		<result property="avatarUrl" column="avatarUrl"/>
+		<result property="language" column="language"/>
+	</resultMap>
+	
+	<sql id="selField">
+		openId,nickName,gender,city,province,country,avatarUrl,language
+	</sql>
+	
+	<sql id="selCondition">
+		<where>
+			<if test="openId!=null and openId!=''">AND openId=#{openId}</if>
+			<if test="nickName!=null and nickName!=''">AND nickName=#{nickName}</if>
+			<if test="gender!=null and gender!=''">AND gender=#{gender}</if>
+			<if test="city!=null and city!=''">AND city=#{city}</if>
+			<if test="province!=null and province!=''">AND province=#{province}</if>
+			<if test="country!=null and country!=''">AND country=#{country}</if>
+			<if test="avatarUrl!=null and avatarUrl!=''">AND avatarUrl=#{avatarUrl}</if>
+			<if test="language!=null and language!=''">AND language=#{language}</if>
+		</where>
+	</sql>
+	
+	<!-- 添加微信用户信息 -->
+	<insert id="insUserInfo" parameterType="com.zhanglong.yxhstudiomp.bean.UserInfo">
+		INSERT INTO `userinfo` (<include refid="selField"></include>)
+		VALUES(#{openId},#{nickName},#{gender},#{city},#{province},#{country},#{avatarUrl},#{language});
+	</insert>
+	
+	<!-- 根据条件查询用户信息 -->
+	<select id="selUserInfoByOpenId" parameterType="com.zhanglong.yxhstudiomp.bean.UserInfo" resultMap="UserInfoMap">
+		SELECT <include refid="selField"></include> FROM `userinfo`
+		<include refid="selCondition"></include> LIMIT 1
+	</select>
+</mapper>

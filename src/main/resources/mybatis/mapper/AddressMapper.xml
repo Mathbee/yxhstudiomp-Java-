@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhanglong.yxhstudiomp.mapper.AddressMapper">
+	<resultMap type="com.zhanglong.yxhstudiomp.bean.Address" id="AddressMap">
+		<id property="aid" column="aid"></id>
+		<result property="openId" column="openId"/>
+		<result property="province_id" column="province_id"/>
+		<result property="city_id" column="city_id"/>
+		<result property="town_id" column="town_id"/>
+		<result property="mobile" column="mobile"/>
+		<result property="address" column="address"/>
+		<result property="contact" column="contact"/>
+		<result property="alias" column="alias"/>
+		<result property="is_default" column="is_default"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
+	
+	<!-- 查询地址字段 -->
+	<sql id="selField">
+		aid,openId,province_id,city_id,town_id,mobile,address,contact,alias,is_default,remark
+	</sql>
+	
+	<!-- 查询地址条件 -->
+	<sql id="selCondition">
+		<where>
+			<if test="openId!=null and openId!=''">AND openId=#{openId}</if>
+			<if test="is_default!=null and is_default!=''">AND is_default=#{is_default}</if>
+		</where>
+	</sql>
+	
+	<!-- 查询默认地址 -->
+	<select id="getDefaultAddressByOpenId" parameterType="java.lang.String" resultMap="AddressMap">
+		SELECT <include refid="selField"></include> FROM `address`
+		<include refid="selCondition"></include>
+		LIMIT 1
+	</select>
+
+	<!-- 根据省份ID查询省份名称 -->
+	<resultMap type="com.zhanglong.yxhstudiomp.bean.Province" id="ProvinceMap">
+		<id property="id" column="id"/>
+		<result property="province_id" column="province_id"/>
+		<result property="province" column="province"/>
+	</resultMap>	
+	<select id="getProvinceByProvince_id" parameterType="java.lang.String" resultMap="ProvinceMap">
+		SELECT * FROM `province` WHERE province_id=#{province_id}
+	</select>
+	<!-- 根据城市ID查询城市名称 -->
+	<resultMap type="com.zhanglong.yxhstudiomp.bean.City" id="CityMap">
+		<id property="id" column="id"/>
+		<result property="city_id" column="city_id"/>
+		<result property="city" column="city"/>
+		<result property="prvince_id" column="prvince_id"/>
+	</resultMap>	
+	<select id="getCityByCity_id" parameterType="java.lang.String" resultMap="CityMap">
+		SELECT * FROM `city` WHERE city_id=#{city_id}
+	</select>
+	<!-- 根据县区ID查询县区名称 -->
+	<resultMap type="com.zhanglong.yxhstudiomp.bean.Town" id="TownMap">
+		<id property="id" column="id"/>
+		<result property="town_id" column="town_id"/>
+		<result property="town" column="town"/>
+		<result property="city_id" column="city_id"/>
+	</resultMap>	
+	<select id="getTownByTown_id" parameterType="java.lang.String" resultMap="TownMap">
+		SELECT * FROM `town` WHERE town_id=#{town_id}
+	</select>
+	
+	<!-- 根据用户openId获取用户地址列表 -->
+	<select id="getAddressListByOpenId" parameterType="java.lang.String" resultMap="AddressMap">
+		SELECT <include refid="selField"></include> FROM `address`
+		<include refid="selCondition"></include>
+	</select>
+</mapper>

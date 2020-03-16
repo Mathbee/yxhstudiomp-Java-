@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhanglong.yxhstudiomp.mapper.ProimgMapper">
+	<resultMap type="com.zhanglong.yxhstudiomp.bean.Proimg" id="ProimgMap">
+		<id property="piid" column="piid"/>
+		<result property="piimgurl" column="piimgurl"/>
+		<result property="pid" column="pid"/>
+	</resultMap>
+
+	<!-- 根据商品Id查询商品图片 -->
+	<select id="getProimgListByPid" parameterType="java.lang.Integer" resultMap="ProimgMap">
+		SELECT piid,piimgurl,pid FROM proimg WHERE pid=#{pid}
+	</select>
+</mapper>
